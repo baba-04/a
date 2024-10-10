@@ -1,4 +1,4 @@
-print("Hello World")
+print("Hello Amazing World")
 
 from models import User
 from schema import Usercreateshcema,Userdeletescheme,GetUserschema,UpdateUserschema
