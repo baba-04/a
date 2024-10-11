@@ -2,7 +2,7 @@ from fastapi import FastAPI,Depends
 from db import get_db
 from sqlalchemy.orm import Session
 from schema import Usercreateshcema,Userdeletescheme,GetUserschema,UpdateUserschema
-from service import create_user_in_db,delete_user_in_db,get_user_from_db,update_user_from_db
+from service import *
 app = FastAPI()
 
 
@@ -29,3 +29,21 @@ def get_user(username:str, db:Session=Depends(get_db)):
 def update_user(username:str,new_username:str,item:UpdateUserschema ,db:Session=Depends(get_db)):
     user=update_user_from_db(user_name=username,new_username=new_username,data=item,db=db)
     return user    
+
+@app.delete("/users/all")
+def delete_old_users(db: Session = Depends(get_db)):
+    message = delete_all_users(db=db)
+    return message
+
+@app.put("/users/hash-passwords")
+def hash_all_users_passwords(db: Session = Depends(get_db)):
+    message = hash_all_users_passwords_service(db=db)
+    return message
+
+@app.post("/user/login")
+def login(username: str, password: str, db: Session = Depends(get_db)):
+    message, success = verify_user_credentials(username=username, plain_password=password, db=db)
+    if success:
+        return {"msg": "Login successful"}
+    else:
+        return {"msg": "Invalid username or password"}

@@ -20,3 +20,4 @@ class UpdateUserschema(BaseModel):
     password:str
     class config:
         extra="forbid"
+        
